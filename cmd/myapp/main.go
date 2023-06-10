@@ -8,22 +8,19 @@ import (
 const PURCHASE = 1700
 
 func main() {
+
+	partner := internal.NewPartner("Peter", 25, 14000, 1000)
 	cust := internal.NewCustomer("Dmitry", 23, 10000, 1000, true)
-
-	cust.WrOffDebt()
-
+	//cust.WrOffDebt()
+	startTransaction(cust)
+	startTransaction(partner)
 	fmt.Printf("%+v\n", cust)
+	fmt.Printf("%+v\n", partner)
 	cust.ProcessingDiscount()
-	/*	cust.CalcDiscount = func() (int, error) {
-		if !cust.Discount {
-			return 0, errors.New("Discount not available")
-		}
-		result := DEFAULT_DISCOUNT - cust.debt
-		if result < 0 {
-			return 0, nil
-		}
-		return result, nil
-	}*/
 	g, err := internal.CalcPrice(cust, PURCHASE)
 	fmt.Printf("%+v\n", g, err)
+}
+
+func startTransaction(debtor internal.Debtor) error {
+	return debtor.WrOffDebt()
 }

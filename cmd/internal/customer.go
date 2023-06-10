@@ -30,14 +30,14 @@ func NewCustomer(name string, age int, balance int, debt int, discount bool) *Cu
 	}
 }
 
-func CalcPrice(c *Customer, PURCHASE int) (int, error) {
-	a, err := c.ProcessingDiscount()
+func CalcPrice(c Discounter, PURCHASE int) (int, error) {
+	d, err, k := c.ProcessingDiscount()
 	var b int
 	if err == nil {
-		b = c.balance - (PURCHASE - a)
+		b = k.balance - (PURCHASE - d)
 	}
 	if err != nil {
-		b = c.balance - PURCHASE
+		b = d - PURCHASE
 	}
 	return b, err
 }
